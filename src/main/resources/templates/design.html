@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Design Your Taco</title>
+</head>
+<body>
+    <h1 th:text="'Design your own taco'"></h1>
+
+    <form th:method="POST" th:object="${taco}">
+
+        <span th:if="${#fields.hasErrors('ingredients')}"
+              th:errors="*{ingredients}">Name Error</span>
+
+        <div th:each="ingredient : ${ingredientList}">
+            <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
+            <span th:text="${ingredient.getType().toString()}">INGREDIENT</span>
+            <span th:text="${ingredient.name}">INGREDIENT</span>
+            <br>
+        </div>
+
+<!--        <div th:each="ingredient : ${wrap}">-->
+<!--            <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>-->
+<!--            <span th:text="${ingredient.name}">INGREDIENT</span><br/>-->
+<!--        </div>-->
+
+<!--        <div th:each="ingredient : ${protein}">-->
+
+<!--        </div>-->
+
+        <br>
+        <div th:text="'Name your taco'"></div>
+        <input type="text" th:field="*{name}">
+        <span th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">Name Error</span>
+        <br>
+        <br>
+        <button>Submit</button>
+
+    </form>
+</body>
+</html>
