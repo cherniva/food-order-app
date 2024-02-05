@@ -22,8 +22,8 @@ public class IngredientService {
         return ingredientRepository.findAll().stream().sorted((i1, i2) -> (i1.getType().toString().compareTo(i2.getType().toString()))).toList();
     }
 
-    public Optional<Ingredient> getById(String id) {
-        return ingredientRepository.findById(id);
+    public Ingredient getById(String id) {
+        return ingredientRepository.findById(id).orElse(null);
     }
 
 }
