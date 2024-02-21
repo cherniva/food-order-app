@@ -8,6 +8,7 @@ import com.cherniva.tacoorderapp.repository.TacoRepository;
 import com.cherniva.tacoorderapp.service.IngredientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -19,22 +20,27 @@ import java.util.List;
 @RequestMapping("/design")
 @SessionAttributes("tacoOrder")
 @RequiredArgsConstructor
+@Slf4j
 public class DesignController {
 
     private final IngredientService ingredientService;
     private final TacoRepository tacoRepository;
 
+    @ModelAttribute(name = "ingredientList")
+    public List<Ingredient> ingredientList() {
+        return ingredientService.getAllIngredientsSortedByType();
+    }
+
     @GetMapping
     public String design(Model model) {
-        List<Ingredient> ingredientList = ingredientService.getAllIngredientsSortedByType();
-        model.addAttribute("taco", new TacoDto());
-        model.addAttribute("ingredientList", ingredientList);
+        model.addAttribute("tacoDto", new TacoDto());
         return "design";
     }
 
     @PostMapping
     public String getTaco(@ModelAttribute TacoOrder tacoOrder, @Valid TacoDto tacoDto, Errors errors, Model model) {
         if(errors.hasErrors()) {
+            model.addAttribute("tacoDto", tacoDto);
             return "design";
         }
 
